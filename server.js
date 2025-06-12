@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const doctorRoutes = require("./routes/doctorRouter");
+const especialtyRouter = require("./routes/specialtyRouter");
+const hospitalRouter = require("./routes/hospitalRouter");
 
 require("dotenv").config();
 
@@ -11,6 +14,10 @@ app.use(cors());
 app.use(express.json());
 
 connectDB();
+
+app.use("/api/doctors", doctorRoutes);
+app.use("/api/specialties", especialtyRouter);
+app.use("/api/hospital", hospitalRouter)
 
 app.listen(PORT, () => {
     console.log(`✅ Web server running at port: ${PORT}`);

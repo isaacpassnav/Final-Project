@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Doctor = require("/models/Doctor");
+const { default: mongoose } = require("mongoose");
+const Doctor = require("../models/Doctor");
 
 const getAllDoctors  = async (req, res) => {
     try {
@@ -14,15 +14,15 @@ const getDoctorById  = async (req, res) => {
     try {
         const doctorId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(doctorId)) {
-            return res.status(400).json({ message: "Invalid Dcotor ID" });
+            return res.status(400).json({ message: "Invalid Doctor ID" });
         };
         const doctor = await Doctor.findById(doctorId);
         if (!doctor) {
-            return res.status(404).json({ message: "Dcotor not found" });
+            return res.status(404).json({ message: "Doctor not found" });
         }
         res.status(200).json(doctor)
     } catch (err) {
-        console.error("Error retrieving Docotor by ID", err);
+        console.error("Error retrieving Doctor by ID", err);
         res.status(500).json({ message: "Server error", error: err.message });
     };
 };
@@ -59,8 +59,34 @@ const updateDoctor = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(doctorId)) {
             return res.status(400).json({ message: "Invalid Doctor ID" });
         }
-        const updatedDoctor = await Doctor.fin
+        const updatedDoctor = await Doctor.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        )
+        if (!updatedDoctor) {
+            return res.status(404).json({ message: "Doctor not found" });
+        }
+        res.status(200).json(updatedDoctor);
     } catch (err) {
-        
+        console.error("Error updating Doctor:", err);
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
+const deleteDoctor = async (req, res) => {
+    try {
+        const doctorId = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(doctorId)) {
+            return res.status(400).json({ message: "Invalid Doctor ID" });
+        };
+        const deletedDoctor = await Doctor.findByIdAndDelete(doctorId);
+        if (!deletedDoctor) {
+            return res.status(404).json({message: "Doctor not found"})
+        };
+        res.status(200).json({message: "Doctor deleted"});
+    } catch (err) {
+        console.error("Error deleting Doctor:", err); 
+        res.status(500).json({ message: "Server error ", error: err.message });
     }
 }
+module.exports = {getAllDoctors, getDoctorById, getDoctorsBySpecialty, createDoctor, updateDoctor, deleteDoctor};
