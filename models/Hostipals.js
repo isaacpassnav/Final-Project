@@ -12,7 +12,7 @@ const hospitalSchema = new mongoose.Schema({
     trim: true
   },
   phone: {
-    type: String,
+    type: Number,
     required: [true, "Phone number is required"],
     trim: true,
     match: [/^\+?[0-9\s\-]{7,20}$/, "Invalid phone number format"]
