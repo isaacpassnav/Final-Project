@@ -31,21 +31,8 @@ const getDoctorById  = async (req, res) => {
     };
 };
 const getDoctorsBySpecialty = async (req, res) => {
-<<<<<<< HEAD
           //#swagger.tags = ['Doctors']
-  //#swagger.summary = 'Get Doctor by Speciality'
-  const specialtyId = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(specialtyId)) {
-    return res.status(400).json({ message: "Invalid specialty ID" });
-  }
-  try {
-    const doctors = await Doctor.find({ specialty: specialtyId }).populate("specialty hospital");
-    res.status(200).json(doctors);
-  } catch (err) {
-    console.error("Error retrieving doctors by specialty", err)
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-=======
+  //#swagger.summary = 'Get Docotr by ID'
     try {
         const specialtyId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(specialtyId)) {
@@ -57,7 +44,6 @@ const getDoctorsBySpecialty = async (req, res) => {
         console.error("Error retrieving doctors by specialty", err)
         res.status(500).json({ message: "Server error", error: err.message });
     }
->>>>>>> a3b3bb0062de871b1f1574daa5f22d1ca9dc3c2f
 };
 const createDoctor = async (req, res) => {
           //#swagger.tags = ['Doctors']
