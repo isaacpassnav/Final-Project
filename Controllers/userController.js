@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const User = require("../models/Users");
 
 const getAllUsers = async (req, res) => {
+  //#swagger.tags = ['Users']
+  //#swagger.summary = 'Display all users'
     try {
         const users = await User.find();
         res.status(200).json(users);
@@ -11,6 +13,8 @@ const getAllUsers = async (req, res) => {
     };
 };
 const getUserById = async (req, res) => {
+  //#swagger.tags = ['Users']
+  //#swagger.summary = 'Display user by ID'
     try {
         const userId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -27,6 +31,8 @@ const getUserById = async (req, res) => {
     }
 };
 const postUser = async (req, res) => {
+  //#swagger.tags = ['Users']
+  //#swagger.summary = 'Create user'
     try {
         const { fullName, email, password, role } = req.body;
         if (!fullName || !email || !password) {
@@ -53,6 +59,8 @@ const logoutUser = async (req, res) => {
     res.status(200).json({ message: "Logout simulated. Auth not implemented." });
 };
 const putUser = async (req, res) => {
+  //#swagger.tags = ['Users']
+  //#swagger.summary = 'Update user by ID'
     try {
         const id = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -69,6 +77,8 @@ const putUser = async (req, res) => {
     }
 };
 const deleteUser = async (req, res) => {
+  //#swagger.tags = ['Users']
+  //#swagger.summary = 'Delete user by ID'
     try {
         const id = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(id)) {

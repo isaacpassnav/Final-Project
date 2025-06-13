@@ -2,6 +2,8 @@ const { default: mongoose } = require("mongoose");
 const Doctor = require("../models/Doctor");
 
 const getAllDoctors  = async (req, res) => {
+      //#swagger.tags = ['Doctors']
+  //#swagger.summary = 'Display all Doctors'
     try {
         const doctors = await Doctor.find();
         res.status(200).json(doctors);
@@ -11,6 +13,8 @@ const getAllDoctors  = async (req, res) => {
     };
 };
 const getDoctorById  = async (req, res) => {
+          //#swagger.tags = ['Doctors']
+  //#swagger.summary = 'Display Doctor by ID'
     try {
         const doctorId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(doctorId)) {
@@ -27,6 +31,8 @@ const getDoctorById  = async (req, res) => {
     };
 };
 const getDoctorsBySpecialty = async (req, res) => {
+          //#swagger.tags = ['Doctors']
+  //#swagger.summary = 'Get Doctor by Speciality'
   const specialtyId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(specialtyId)) {
     return res.status(400).json({ message: "Invalid specialty ID" });
@@ -40,6 +46,8 @@ const getDoctorsBySpecialty = async (req, res) => {
   }
 };
 const createDoctor = async (req, res) => {
+          //#swagger.tags = ['Doctors']
+  //#swagger.summary = 'Create Doctor'
     try {
         const {firstName, lastName, email, gender, specialty, hospital} = req.body;
         if (!firstName || !lastName || !email || !gender || !specialty || !hospital) {
@@ -54,6 +62,8 @@ const createDoctor = async (req, res) => {
     };
 }
 const updateDoctor = async (req, res) => {
+          //#swagger.tags = ['Doctors']
+  //#swagger.summary = 'Update Doctor by ID'
     try {
         const doctorId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(doctorId)) {
@@ -74,6 +84,8 @@ const updateDoctor = async (req, res) => {
     }
 };
 const deleteDoctor = async (req, res) => {
+          //#swagger.tags = ['Doctors']
+  //#swagger.summary = 'Delete Doctor by ID'
     try {
         const doctorId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(doctorId)) {

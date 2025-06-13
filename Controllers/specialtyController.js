@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Specialty = require("../models/Specialties");
 
 const getAllSpecialties = async (req, res) => {
+  //#swagger.tags = ['Specialities']
+  //#swagger.summary = 'Display all Specialities'
     try {
         const specialties = await Specialty.find();
         res.status(200).json(specialties);
@@ -12,6 +14,8 @@ const getAllSpecialties = async (req, res) => {
 };
 
 const getSpecialtyById = async (req, res) => {
+  //#swagger.tags = ['Specialities']
+  //#swagger.summary = 'Display Speciality by ID'
     try {
         const specialtyId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(specialtyId)) {
@@ -29,6 +33,8 @@ const getSpecialtyById = async (req, res) => {
 };
 
 const createSpecialty = async (req, res) => {
+  //#swagger.tags = ['Specialities']
+  //#swagger.summary = 'Create Speciality'
     try {
         const { name, description } = req.body;
         if (!name) {
@@ -44,6 +50,8 @@ const createSpecialty = async (req, res) => {
 };
 
 const updateSpecialty = async (req, res) => {
+  //#swagger.tags = ['Specialities']
+  //#swagger.summary = 'Update Speciality by ID'
     try {
         const specialtyId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(specialtyId)) {
@@ -65,6 +73,8 @@ const updateSpecialty = async (req, res) => {
 };
 
 const deleteSpecialty = async (req, res) => {
+  //#swagger.tags = ['Specialities']
+  //#swagger.summary = 'Delete Speciality by ID'
     try {
         const specialtyId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(specialtyId)) {

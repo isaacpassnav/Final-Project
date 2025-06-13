@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Hospital = require("../models/Hostipals");
 
 const getAllHospitals = async (req, res) => {
+  //#swagger.tags = ['Hospitals']
+  //#swagger.summary = 'Display all Hospitals'
   try {
     const hospitals = await Hospital.find();
     res.status(200).json(hospitals);
@@ -11,6 +13,8 @@ const getAllHospitals = async (req, res) => {
 };
 
 const getHospitalById = async (req, res) => {
+  //#swagger.tags = ['Hospitals']
+  //#swagger.summary = 'Display Hospital by ID'
     try {
         const hospitalId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(hospitalId)) {
@@ -27,6 +31,8 @@ const getHospitalById = async (req, res) => {
 };
 
 const createHospital = async (req, res) => {
+  //#swagger.tags = ['Hospitals']
+  //#swagger.summary = 'Create Hospital'
     try {
         const { name, address, phone } = req.body;
         if (!name || !address || !phone) {
@@ -41,6 +47,8 @@ const createHospital = async (req, res) => {
 };
 
 const updateHospital = async (req, res) => {
+  //#swagger.tags = ['Hospitals']
+  //#swagger.summary = 'Update Hospital by ID'
     try {
         const hospitalId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(hospitalId)) {
@@ -58,6 +66,8 @@ const updateHospital = async (req, res) => {
     }
 };
 const deleteHospital = async (req, res) => {
+  //#swagger.tags = ['Hospitals']
+  //#swagger.summary = 'Delete Hospital by ID'
     try {
         const hospitalId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(hospitalId)) {
