@@ -54,11 +54,13 @@ const logoutUser = async (req, res) => {
 };
 const putUser = async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        const userId = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: "Invalid User ID" });
         }
-        const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true }).select("-password");
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, req.body, { new: true })
+            .select("-password");
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });
         }

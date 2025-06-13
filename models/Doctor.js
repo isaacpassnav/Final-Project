@@ -24,7 +24,7 @@ const doctorSchema = new mongoose.Schema({
     match: [/\S+@\S+\.\S+/, "Please provide a valid email address"]
   },
   phone: {
-    type: String,
+    type: Number,
     trim: true,
     match: [/^\+?[0-9]{7,15}$/, "Please provide a valid phone number"]
   },
