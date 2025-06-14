@@ -49,22 +49,35 @@ const createHospital = async (req, res) => {
 const updateHospital = async (req, res) => {
   //#swagger.tags = ['Hospitals']
   //#swagger.summary = 'Update Hospital by ID'
-    try {
-        const hospitalId = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(hospitalId)) {
-            return res.status(400).json({ message: "Invalid hospital ID" });
-        }
-        const updated = await Hospital.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
-        if (!updated) return res.status(404).json({ message: "Hospital not found" });
-            res.status(200).json(updated);
-    } catch (err) {
-        res.status(500).json({ message: "Error updating hospital", error: err.message });
+
+  try {
+    // Convert the ID from the URL parameter to a valid MongoDB ObjectId
+    const hospitalId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
+
+    // Create an object with the updated hospital data from the request body
+    const updatedHospital = {
+      name: req.body.name,
+      address: req.body.address,
+      phone: req.body.phone
+    };
+
+    // Replace the existing hospital document with the new one
+    const response = await Hospital.replaceOne({ _id: hospitalId }, updatedHospital);
+
+    // Check if the document was successfully modified
+    if (response.modifiedCount > 0) {
+      res.status(204).send(); // Success with no content
+    } else {
+      // If no document was modified, it may not exist or no changes were made
+      res.status(404).json({ error: "Hospital not found or no changes made." });
     }
+  } catch (error) {
+    // Handle any errors that occur during the update process
+    console.error("Error updating hospital:", error);
+    res.status(500).json({ error: "An error occurred while updating the hospital." });
+  }
 };
+
 const deleteHospital = async (req, res) => {
   //#swagger.tags = ['Hospitals']
   //#swagger.summary = 'Delete Hospital by ID'

@@ -61,28 +61,38 @@ const createDoctor = async (req, res) => {
         res.status(500).json({ message: "Error saving new doctor", error: err.message });
     };
 }
+
+
 const updateDoctor = async (req, res) => {
-          //#swagger.tags = ['Doctors']
-  //#swagger.summary = 'Update Doctor by ID'
-    try {
-        const doctorId = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(doctorId)) {
-            return res.status(400).json({ message: "Invalid Doctor ID" });
-        }
-        const updatedDoctor = await Doctor.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        )
-        if (!updatedDoctor) {
-            return res.status(404).json({ message: "Doctor not found" });
-        }
-        res.status(200).json(updatedDoctor);
-    } catch (err) {
-        console.error("Error updating Doctor:", err);
-        res.status(500).json({ message: "Server error", error: err.message });
+  //#swagger.tags = ['Doctors']
+  //#swagger.summary = 'Update a Doctor'
+
+  try {
+    const doctorId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
+
+    const updatedDoctor = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      gender: req.body.gender,
+      specialty: req.body.specialty,
+      hospital: req.body.hospital
+    };
+
+    const response = await Doctor.replaceOne({ _id: doctorId }, updatedDoctor);
+
+    if (response.modifiedCount > 0) {
+      res.status(204).send(); // Success with no content
+    } else {
+      res.status(404).json({ error: "Doctor not found or no changes made." });
     }
+  } catch (error) {
+    console.error("Error updating doctor:", error);
+    res.status(500).json({ error: "An error occurred while updating the doctor." });
+  }
 };
+
 const deleteDoctor = async (req, res) => {
           //#swagger.tags = ['Doctors']
   //#swagger.summary = 'Delete Doctor by ID'

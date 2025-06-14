@@ -6,7 +6,7 @@ const doc = {
         description: 'Hospital Appointment Management API'
     },
     host: 'localhost:5000',
-    schemes: ['http', 'https']
+    schemes: ['http']
 };
 
 const outputFile = './swagger.json';
