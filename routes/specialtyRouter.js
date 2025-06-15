@@ -1,15 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const specialtyController = require("../Controllers/specialtyController")
+const specialtyController = require("../Controllers/specialtyController");
+const ensureAuth = require("../middleware/authMiddleware");
 
 router.get("/", specialtyController.getAllSpecialties);
 
 router.get("/:id", specialtyController.getSpecialtyById);
 
-router.post("/", specialtyController.createSpecialty);
+router.post("/", ensureAuth, specialtyController.createSpecialty);
 
-router.put("/:id", specialtyController.updateSpecialty);
+router.put("/:id", ensureAuth, specialtyController.updateSpecialty);
 
-router.delete("/:id", specialtyController.deleteSpecialty);
+router.delete("/:id", ensureAuth, specialtyController.deleteSpecialty);
 
 module.exports = router;
