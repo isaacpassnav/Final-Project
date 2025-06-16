@@ -35,9 +35,6 @@ const postUser = async (req, res) => {
   //#swagger.summary = 'Create user'
     try {
         const { fullName, email, password, role } = req.body;
-        if (!fullName || !email || !password) {
-            return res.status(400).json({ message: "Missing required fields" });
-        }
         const existing = await User.findOne({ email });
         if (existing) {
             return res.status(409).json({ message: "Email already exists" });

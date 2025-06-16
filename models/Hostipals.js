@@ -4,12 +4,16 @@ const hospitalSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Hospital name is required"],
-    trim: true
+    trim: true,
+    minlength: [5, "Hospital name must be at least 5 characters long"],
+    maxlength: [100, "Hospital name can't be longer than 100 characters"],
   },
   address: {
     type: String,
     required: [true, "Address is required"],
-    trim: true
+    trim: true,
+    minlength: [5, "Hospital address must be at least 5 characters long"],
+    maxlength: [200, "Hospital address can't be longer than 200 characters"],
   },
   phone: {
     type: Number,

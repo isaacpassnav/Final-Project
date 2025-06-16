@@ -573,7 +573,6 @@
                 },
                 "password": {
                   "type":"string",
-                  "minLength": 6,
                   "example": "any"
                 },
                 "role": {

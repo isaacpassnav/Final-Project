@@ -36,10 +36,6 @@ const createSpecialty = async (req, res) => {
   //#swagger.tags = ['Specialities']
   //#swagger.summary = 'Create Speciality'
     try {
-        const { name, description } = req.body;
-        if (!name) {
-            return res.status(400).json({ message: "Name is required" });
-        }
         const newSpecialty = new Specialty(req.body);
         const saveSpecialty = await newSpecialty.save();
         res.status(201).json(saveSpecialty);

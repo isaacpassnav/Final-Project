@@ -49,10 +49,6 @@ const createDoctor = async (req, res) => {
           //#swagger.tags = ['Doctors']
   //#swagger.summary = 'Create Doctor'
     try {
-        const {firstName, lastName, email, gender, specialty, hospital} = req.body;
-        if (!firstName || !lastName || !email || !gender || !specialty || !hospital) {
-            return res.status(400).json({ message: "Missing required fields" });
-        };
         const newDoctor = new Doctor(req.body);
         const saveDoctor = await newDoctor.save();
         res.status(201).json(saveDoctor);

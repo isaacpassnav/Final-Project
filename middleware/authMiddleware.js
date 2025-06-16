@@ -1,5 +1,5 @@
 function ensureAuth(req, res, next) {
-  const allowedAdmins = ["isaacpassnav", "mmusih"]; 
+  const allowedAdmins = ["isaacpassnav", "mmusih", "AndreVivs"]; 
 
     if (req.isAuthenticated && req.isAuthenticated()) {
         const username = req.user?.username;
