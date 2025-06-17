@@ -1,5 +1,5 @@
 # Final-Project
-Hospital Appointment Management API
+## Hospital Appointment Management API
 
 Team Members:
 1.Isaac Pasapera 
