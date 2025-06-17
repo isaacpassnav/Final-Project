@@ -5,6 +5,7 @@ Team Members:
 1.Isaac Pasapera 
 2.Mmusi Hubona 
 3.Andrea Ramos 
+4.Folusho Sanni
 
 🔧 Deployment Instructions
 To properly configure and run the project with GitHub OAuth and Swagger on Render, follow these steps:
