@@ -5,7 +5,7 @@
     "description": "Hospital Appointment Management API",
     "version": "1.0.0"
   },
-  "host": "final-project-xxgt.onrender.com",
+  "host": "final-project-1-xxgt.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
