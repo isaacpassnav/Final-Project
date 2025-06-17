@@ -622,6 +622,7 @@
                   "example": "any"
                 },
                 "password": {
+                  "type":"string",
                   "example": "any"
                 },
                 "role": {

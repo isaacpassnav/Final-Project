@@ -34,10 +34,6 @@ const createHospital = async (req, res) => {
   //#swagger.tags = ['Hospitals']
   //#swagger.summary = 'Create Hospital'
     try {
-        const { name, address, phone } = req.body;
-        if (!name || !address || !phone) {
-            return res.status(400).json({ message: "Missing required fields" });
-        }
         const newHospital = new Hospital(req.body);
         const saved = await newHospital.save();
         res.status(201).json(saved);
@@ -64,7 +60,7 @@ const updateHospital = async (req, res) => {
     const response = await Hospital.replaceOne({ _id: hospitalId }, updatedHospital);
 
     if (response.modifiedCount > 0) {
-      res.status(204).send();
+      res.status(200).json(updatedHospital); // Return the updated hospital data
     } else {
       res.status(404).json({ error: "Hospital not found or no changes made." });
     }
