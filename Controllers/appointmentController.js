@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Appointment = require("../models/Appointment");
 
 const getAllAppointments = async (req, res) => {
+  //#swagger.tags = ['Appointments']
+  //#swagger.summary = 'Get All Appointments'
     try {
         const appointments = await Appointment.find()
         .populate("patient", "fullName email")
@@ -14,6 +16,8 @@ const getAllAppointments = async (req, res) => {
     }
 };
 const getAppointmentById = async (req, res) => {
+  //#swagger.tags = ['Appointments']
+  //#swagger.summary = 'Get an Appointment by ID'
     try {
         const appointmentId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(appointmentId)) {
@@ -33,6 +37,8 @@ const getAppointmentById = async (req, res) => {
     }
 };
 const createAppointment = async (req, res) => {
+  //#swagger.tags = ['Appointments']
+  //#swagger.summary = 'Create an Appointment'
     try {
         const newAppointment = new Appointment(req.body);
         const saved = await newAppointment.save();
@@ -42,27 +48,39 @@ const createAppointment = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
+
 const updateAppointment = async (req, res) => {
-    try {
-        const appointmentId = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(appointmentId)) {
-            return res.status(400).json({ message: "Invalid appointment ID" });
-        }
-        const updated = await Appointment.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
-        if (!updated) {
-            return res.status(404).json({ message: "Appointment not found" });
-        }
-        res.status(200).json(updated);
-    } catch (err) {
-        console.error("Error updating Appointment:", err);
-        res.status(500).json({ message: "Server error", error: err.message });
+  //#swagger.tags = ['Appointments']
+  //#swagger.summary = 'Update an Appointment'
+
+  try {
+    const appointmentId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
+
+    const updatedAppointment = {
+      patient: req.body.patient,
+      doctor: req.body.doctor,
+      hospital: req.body.hospital,
+      date: req.body.date,
+      reason: req.body.reason,
+      status: req.body.status
+    };
+
+    const response = await Appointment.replaceOne({ _id: appointmentId }, updatedAppointment);
+
+    if (response.modifiedCount > 0) {
+      res.status(204).send(); // Success with no content
+    } else {
+      res.status(404).json({ message: "Appointment not found or no changes made." });
     }
+  } catch (error) {
+    console.error("Error updating appointment:", error);
+    res.status(500).json({ message: "An error occurred while updating the appointment." });
+  }
 };
+
 const deleteAppointment = async (req, res) => {
+  //#swagger.tags = ['Appointments']
+  //#swagger.summary = 'Delete an Appointment by ID'
     try {
         const appointmentId = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(appointmentId)) {
@@ -79,6 +97,8 @@ const deleteAppointment = async (req, res) => {
     }
 };
 const getAppointmentsByUser = async (req, res) => {
+  //#swagger.tags = ['Appointments']
+  //#swagger.summary = 'Get an Appointment by User ID'
     const userId = req.params.id;
     try {
         if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -97,6 +117,8 @@ const getAppointmentsByUser = async (req, res) => {
     }
 };
 const getAppointmentsByDoctor = async (req, res) => {
+  //#swagger.tags = ['Appointments']
+  //#swagger.summary = 'Get an Appointment by Doctor ID'
     const doctorId = req.params.id;
     try {
     if (!mongoose.Types.ObjectId.isValid(doctorId)) {
