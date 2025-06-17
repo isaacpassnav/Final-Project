@@ -40,10 +40,6 @@ const createAppointment = async (req, res) => {
   //#swagger.tags = ['Appointments']
   //#swagger.summary = 'Create an Appointment'
     try {
-        const { patient, doctor, hospital, date, reason } = req.body;
-        if (!patient || !doctor || !hospital || !date) {
-            return res.status(400).json({ message: "Missing required fields" });
-        }
         const newAppointment = new Appointment(req.body);
         const saved = await newAppointment.save();
         res.status(201).json(saved);
