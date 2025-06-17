@@ -51,28 +51,24 @@ const updateHospital = async (req, res) => {
   //#swagger.summary = 'Update Hospital by ID'
 
   try {
-    // Convert the ID from the URL parameter to a valid MongoDB ObjectId
     const hospitalId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
 
-    // Create an object with the updated hospital data from the request body
     const updatedHospital = {
       name: req.body.name,
       address: req.body.address,
-      phone: req.body.phone
+      phone: req.body.phone,
+      website: req.body.website,   // Added
+      capacity: req.body.capacity  // Added
     };
 
-    // Replace the existing hospital document with the new one
     const response = await Hospital.replaceOne({ _id: hospitalId }, updatedHospital);
 
-    // Check if the document was successfully modified
     if (response.modifiedCount > 0) {
-      res.status(204).send(); // Success with no content
+      res.status(204).send();
     } else {
-      // If no document was modified, it may not exist or no changes were made
       res.status(404).json({ error: "Hospital not found or no changes made." });
     }
   } catch (error) {
-    // Handle any errors that occur during the update process
     console.error("Error updating hospital:", error);
     res.status(500).json({ error: "An error occurred while updating the hospital." });
   }

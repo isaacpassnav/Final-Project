@@ -58,26 +58,36 @@ const loginUser = async (req, res) => {
 const logoutUser = async (req, res) => {
     res.status(200).json({ message: "Logout simulated. Auth not implemented." });
 };
+
 const putUser = async (req, res) => {
   //#swagger.tags = ['Users']
   //#swagger.summary = 'Update user by ID'
-    try {
-        const userId = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: "Invalid User ID" });
-        }
-        const updatedUser = await User.findByIdAndUpdate(
-            userId, req.body, { new: true })
-            .select("-password");
-        if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json(updatedUser);
-    } catch (err) {
-        console.error("Error updating user:", err);
-        res.status(500).json({ message: "Update failed, System error", error: err.message });
+
+  try {
+    const userId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
+
+    const updatedUser = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      gender: req.body.gender,
+      role: req.body.role,
+    };
+
+    const response = await User.replaceOne({ _id: userId }, updatedUser);
+
+    if (response.modifiedCount > 0) {
+      res.status(204).send(); // Success with no content
+    } else {
+      res.status(404).json({ message: "User not found or no changes made." });
     }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Update failed, system error", error: error.message });
+  }
 };
+
 const deleteUser = async (req, res) => {
   //#swagger.tags = ['Users']
   //#swagger.summary = 'Delete user by ID'
