@@ -27,3 +27,14 @@ https://your-app-name.onrender.com
 
 Authorization callback URL:
 https://your-app-name.onrender.com/auth/github/callback
+
+## ✅ Running Tests with Jest
+Follow these steps to properly run the project tests.
+Make sure Jest is installed and properly configured in package.json.
+
+To run all tests with a detailed output:
+    npx jest __tests__ --verbose
+To run a specific test file (for example, the doctor controller):
+    npx jest __tests__/doctorController.test.js --verbose
+
+Use --verbose to see detailed results for each test.
