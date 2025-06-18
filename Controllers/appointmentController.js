@@ -15,8 +15,7 @@ const getAllAppointments = async (req, res) => {
         .populate("hospital", "name address");
         res.status(200).json(appointments);
     } catch (err) {
-        console.error("Error retrieving Appointments", err )
-        res.status(500).json({ message: "Server error", error: err.message });
+        res.status(500).json({ message: "Server error", error: err.message, error: err });
     }
 };
 const getAppointmentById = async (req, res) => {
@@ -36,8 +35,7 @@ const getAppointmentById = async (req, res) => {
         }
         res.status(200).json(appointment);
     } catch (err) {
-        console.error("Error retrieving Appointment by ID", err);
-        res.status(500).json({ message: "Server error", error: err.message });
+        res.status(500).json({ message: "Server error", error: err.message, error: err });
     }
 };
 const createAppointment = async (req, res) => {
@@ -95,8 +93,7 @@ const updateAppointment = async (req, res) => {
       res.status(404).json({ message: "Appointment not found or no changes made." });
     }
   } catch (error) {
-    console.error("Error updating appointment:", error);
-    res.status(500).json({ message: "An error occurred while updating the appointment." });
+    res.status(500).json({ message: "An error occurred while updating the appointment.", error: error.message });
   }
 };
 const deleteAppointment = async (req, res) => {
@@ -113,8 +110,7 @@ const deleteAppointment = async (req, res) => {
         }
         res.status(200).json({ message: "Appointment deleted" });
     } catch (err) {
-        console.error("Error deleting Appointment:", err); 
-        res.status(500).json({ message: "Server error ", error: err.message });
+        res.status(500).json({ message: "Server error ", error: err.message, error: err });
     }
 };
 const getAppointmentsByUser = async (req, res) => {
@@ -133,8 +129,7 @@ const getAppointmentsByUser = async (req, res) => {
         }
         res.status(200).json(appointments);
     } catch (err) {
-        console.error(`Error retrieving appointments for User ID: ${userId}`, err);
-        res.status(500).json({ message: "Server error", error: err.message });
+        res.status(500).json({ message: "Server error", error: err.message, userId: userId, error: err });
     }
 };
 const getAppointmentsByDoctor = async (req, res) => {
@@ -148,14 +143,12 @@ const getAppointmentsByDoctor = async (req, res) => {
     const appointments = await Appointment.find({ doctor: doctorId })
         .populate("patient", "fullName email")
         .populate("hospital", "name address");
-    // console.log("Appointments received:", appointments);
     if (appointments.length === 0) {
         return res.status(404).json({ message: `No appointments found for Doctor ID: ${doctorId}` });
     }
     res.status(200).json(appointments);
   } catch (err) {
-        console.error(`Error retrieving appointments for Doctor ID: ${doctorId}`, err);
-        res.status(500).json({ message: "Server error", error: err.message });
+        res.status(500).json({ message: "Server error", error: err.message, doctorId: doctorId, error: err });
     }
 };
 module.exports = {getAllAppointments,getAppointmentById,createAppointment,updateAppointment,deleteAppointment,getAppointmentsByUser,getAppointmentsByDoctor};

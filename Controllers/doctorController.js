@@ -8,7 +8,6 @@ const getAllDoctors  = async (req, res) => {
         const doctors = await Doctor.find();
         res.status(200).json(doctors);
     } catch (err) {
-        console.error("Error retrieving Doctors", err )
         res.status(500).json({ message: "Error retrieving Doctors", error: err.message });
     };
 };
@@ -26,7 +25,6 @@ const getDoctorById  = async (req, res) => {
         }
         res.status(200).json(doctor)
     } catch (err) {
-        console.error("Error retrieving Doctor by ID", err);
         res.status(500).json({ message: "Server error", error: err.message });
     };
 };
@@ -41,7 +39,6 @@ const getDoctorsBySpecialty = async (req, res) => {
         const doctors = await Doctor.find({ specialty: specialtyId }).populate("specialty hospital");
         res.status(200).json(doctors);
     } catch (err) {
-        console.error("Error retrieving doctors by specialty", err)
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
@@ -83,7 +80,6 @@ const updateDoctor = async (req, res) => {
       res.status(404).json({ error: "Doctor not found or no changes made." });
     }
   } catch (error) {
-    console.error("Error updating doctor:", error);
     res.status(500).json({ error: "An error occurred while updating the doctor." });
   }
 };
@@ -102,7 +98,6 @@ const deleteDoctor = async (req, res) => {
         };
         res.status(200).json({message: "Doctor deleted"});
     } catch (err) {
-        console.error("Error deleting Doctor:", err); 
         res.status(500).json({ message: "Server error ", error: err.message });
     }
 }

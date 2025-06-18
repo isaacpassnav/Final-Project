@@ -75,8 +75,7 @@ const updateHospital = async (req, res) => {
       res.status(404).json({ error: "Hospital not found or no changes made." });
     }
   } catch (error) {
-    console.error("Error updating hospital:", error);
-    res.status(500).json({ error: "An error occurred while updating the hospital." });
+    res.status(500).json({ message: "An error occurred while updating the hospital.", error: error.message });
   }
 };
 
@@ -94,7 +93,6 @@ const deleteHospital = async (req, res) => {
         }    
         res.status(200).json({ message: "Hospital deleted" });
     } catch (err) {
-        console.error("Error deleting hospital:", err);
         res.status(500).json({ message: "server Error", error: err.message });
     }
 };

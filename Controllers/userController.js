@@ -8,7 +8,6 @@ const getAllUsers = async (req, res) => {
         const users = await User.find();
         res.status(200).json(users);
     } catch (err) {
-        console.error("Error retrieving", err);
         res.status(500).json({ message: "server error", error:err});
     };
 };
@@ -27,7 +26,6 @@ const getUserById = async (req, res) => {
         }
         res.status(200).json(user)
     } catch (err) {
-        console.error("Error retrieving user:", err);
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
@@ -45,7 +43,6 @@ const postUser = async (req, res) => {
         const savedUser = await newUser.save();
         res.status(201).json({ message: "User registered/created successfully", id: savedUser._id });
     } catch (err) {
-        console.error("Error registering user:", err);
         res.status(500).json({ message: "Server error ", error: err.message });
     }
 };
@@ -117,7 +114,6 @@ const putUser = async (req, res) => {
       res.status(404).json({ message: "User not found or no changes made." });
     }
   } catch (error) {
-    console.error("Error updating user:", error);
     res.status(500).json({ message: "Update failed, system error", error: error.message });
   }
 };
@@ -136,7 +132,6 @@ const deleteUser = async (req, res) => {
         }
         res.status(200).json({ message: "User deleted" });
     } catch (err) {
-        console.error("Error deleting user:", err);
         res.status(500).json({ message: "Delete failed", error: err.message });
     }
 };
