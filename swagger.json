@@ -51,28 +51,25 @@
               "type": "object",
               "properties": {
                 "firstName": {
-                  "type": "string",
                   "example": "Daniel"
                 },
                 "lastName": {
-                  "type": "string",
                   "example": "Smith"
                 },
                 "email": {
-                  "type": "string",
                   "example": "doctorDanielSmith@hospital.com"
                 },
+                "phone": {
+                  "example": "+1234567890"
+                },  
                 "gender": {
-                  "type": "string",
                   "enum": ["male", "female", "other"],
                   "example": "male"
                 },
                 "specialty": {
-                  "type": "string",
                   "example": "685097f8c9963779c87036bf"
                 },
                 "hospital": {
-                  "type": "string",
                   "example": "68509868c9963779c87036c1"
                 }
               }
@@ -203,32 +200,25 @@
               "type": "object",
               "properties": {
                 "firstName": {
-                  "type": "string",
                   "example": "Daniel"
                 },
                 "lastName": {
-                  "type": "string",
                   "example": "Smith"
                 },
                 "email": {
-                  "type": "string",
                   "example": "doctorDanielSmith@hospital.com"
                 },
                 "phone": {
-                  "type": "string",
                   "example": "+1234567890"
                 },
                 "gender": {
-                  "type": "string",
                   "enum": ["male", "female", "other"],
                   "example": "male"
                 },
                 "specialty": {
-                  "type": "string",
                   "example": "685097f8c9963779c87036bf"
                 },
                 "hospital": {
-                  "type": "string",
                   "example": "68509868c9963779c87036c1"
                 }
               }
@@ -533,14 +523,12 @@
                   "example": "134 Main St, Springfield, USA"
                 },
                 "phone": {
-                  "type": "string",
-                  "example": "1234567890"
+                  "example": "+1234567890"
                 },
                 "website": {
                   "example": "https://saintluke.org"
                 },
                 "capacity": {
-                  "type": "string",
                   "example": "40"
                 }
               }
@@ -628,14 +616,12 @@
                   "example": "134 Main St, Springfield, USA"
                 },
                 "phone": {
-                  "type": "string",
-                  "example": "1234567890"
+                  "example": "+1234567890"
                 },
                 "website": {
                   "example": "https://saintluke.org"
                 },
                 "capacity": {
-                  "type": "string",
                   "example": "400"
                 }
               }

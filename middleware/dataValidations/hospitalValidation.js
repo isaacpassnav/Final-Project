@@ -1,20 +1,11 @@
 const Validator = require("validatorjs");
 
-Validator.register(
-  "phone_format",
-  function (value) {
-    const regex = /^\+?[0-9\s\-]{7,20}$/;
-    return regex.test(value);
-  },
-  "The phone number format is invalid."
-);
-
 const hospitalRules = {
   name: "required|string|min:5|max:100",
   address: "required|string|min:5|max:200",
-  phone: "required|string|phone_format",
+  phone: "required|numeric|min:10|regex:/^\\+?[0-9\\s\\-]{7,20}$/",
   website: "string|url",
-  capacity: "required|string|min:0"
+  capacity: "required|numeric|min:1"
 };
 
 const validateHospital = (req, res, next) => {

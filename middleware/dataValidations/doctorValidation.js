@@ -4,7 +4,7 @@ const doctorRules = {
   firstName: "required|string|min:2|max:50",
   lastName: "required|string|min:2|max:50",
   email: "required|email",
-  phone: "string|regex:^\\+?[0-9]{7,15}$",
+  phone: "numeric|regex:^\\+?[0-9]{7,15}$|min:10",
   gender: "required|in:male,female,other",
   specialty: "required|string",
   hospital: "required|string",
