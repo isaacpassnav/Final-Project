@@ -52,11 +52,9 @@ const createAppointment = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
-
 const updateAppointment = async (req, res) => {
   //#swagger.tags = ['Appointments']
   //#swagger.summary = 'Update an Appointment'
-
   try {
     const appointmentId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
 
@@ -81,7 +79,6 @@ const updateAppointment = async (req, res) => {
     res.status(500).json({ message: "An error occurred while updating the appointment." });
   }
 };
-
 const deleteAppointment = async (req, res) => {
   //#swagger.tags = ['Appointments']
   //#swagger.summary = 'Delete an Appointment by ID'
@@ -131,7 +128,7 @@ const getAppointmentsByDoctor = async (req, res) => {
     const appointments = await Appointment.find({ doctor: doctorId })
         .populate("patient", "fullName email")
         .populate("hospital", "name address");
-
+    // console.log("Appointments received:", appointments);
     if (appointments.length === 0) {
         return res.status(404).json({ message: `No appointments found for Doctor ID: ${doctorId}` });
     }
@@ -141,4 +138,4 @@ const getAppointmentsByDoctor = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
-module.exports = {getAllAppointments,getAppointmentById,createAppointment,updateAppointment,deleteAppointment,getAppointmentsByUser,getAppointmentsByDoctor,};
+module.exports = {getAllAppointments,getAppointmentById,createAppointment,updateAppointment,deleteAppointment,getAppointmentsByUser,getAppointmentsByDoctor};
