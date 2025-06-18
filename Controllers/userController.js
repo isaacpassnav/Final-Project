@@ -8,10 +8,10 @@ const getAllUsers = async (req, res) => {
         const users = await User.find();
         res.status(200).json(users);
     } catch (err) {
-        console.error("Error retrieving", err);
         res.status(500).json({ message: "server error", error:err});
     };
 };
+
 const getUserById = async (req, res) => {
   //#swagger.tags = ['Users']
   //#swagger.summary = 'Display user by ID'
@@ -26,10 +26,10 @@ const getUserById = async (req, res) => {
         }
         res.status(200).json(user)
     } catch (err) {
-        console.error("Error retrieving user:", err);
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
+
 const postUser = async (req, res) => {
   //#swagger.tags = ['Users']
   //#swagger.summary = 'Create user'
@@ -41,20 +41,55 @@ const postUser = async (req, res) => {
         }
         const newUser = new User({ fullName, email, password, role });
         const savedUser = await newUser.save();
-        res.status(201).json({ message: "User registered", id: savedUser._id });
+        res.status(201).json({ message: "User registered/created successfully", id: savedUser._id });
     } catch (err) {
-        console.error("Error registering user:", err);
         res.status(500).json({ message: "Server error ", error: err.message });
     }
 };
-// Login (sin auth real)
+
 const loginUser = async (req, res) => {
-    res.status(200).json({ message: "Login simulated. Auth not implemented." });
+  try {
+    if (req.isAuthenticated()) {
+      return res.status(200).json({
+        message: "Authentication successful",
+        user: req.user.displayName || req.user.username || "Authenticated User",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error during authentication",
+      error: error.message,
+    });
+  }
 };
-// Logout (solo demo)
+
+
 const logoutUser = async (req, res) => {
-    res.status(200).json({ message: "Logout simulated. Auth not implemented." });
+  try {
+    const userName = req.user?.displayName || req.user?.username || "Unknown User";
+
+    req.logout((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Logout error", error: err });
+      }
+
+      req.session.destroy((err) => {
+        if (err) {
+          return res.status(500).json({ message: "Destroy session error", error: err });
+        }
+
+        res.clearCookie("connect.sid"); // Asegura borrar la cookie de sesión
+        return res.status(200).json({
+          message: "Session closed successfully",
+          user: userName
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Logout error", error });
+  }
 };
+
 
 const putUser = async (req, res) => {
   //#swagger.tags = ['Users']
@@ -64,8 +99,7 @@ const putUser = async (req, res) => {
     const userId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
 
     const updatedUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      fullName: req.body.fullName,
       email: req.body.email,
       phone: req.body.phone,
       gender: req.body.gender,
@@ -75,12 +109,11 @@ const putUser = async (req, res) => {
     const response = await User.replaceOne({ _id: userId }, updatedUser);
 
     if (response.modifiedCount > 0) {
-      res.status(204).send(); // Success with no content
+      res.status(200).json({ message: "User updated successfully", user: updatedUser });
     } else {
       res.status(404).json({ message: "User not found or no changes made." });
     }
   } catch (error) {
-    console.error("Error updating user:", error);
     res.status(500).json({ message: "Update failed, system error", error: error.message });
   }
 };
@@ -99,7 +132,6 @@ const deleteUser = async (req, res) => {
         }
         res.status(200).json({ message: "User deleted" });
     } catch (err) {
-        console.error("Error deleting user:", err);
         res.status(500).json({ message: "Delete failed", error: err.message });
     }
 };

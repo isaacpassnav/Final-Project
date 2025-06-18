@@ -6,9 +6,9 @@ const dataValidation = require("../middleware/dataValidations/userValidation");
 
 router.post("/register", ensureAuth, dataValidation.validateUser, userController.postUser);
 
-router.post("/login", dataValidation.validateUser, userController.loginUser);
+router.post("/login", dataValidation.validateGitHubLogin, userController.loginUser);
 
-router.post("/logout", dataValidation.validateUser, userController.logoutUser);
+router.post("/logout", dataValidation.validateLogoutUser, userController.logoutUser);
 
 router.get("/", userController.getAllUsers);
 

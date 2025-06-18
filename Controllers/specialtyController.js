@@ -8,7 +8,6 @@ const getAllSpecialties = async (req, res) => {
         const specialties = await Specialty.find();
         res.status(200).json(specialties);
     } catch (err) {
-        console.error("Error retrieving specialties:", err);
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
@@ -27,7 +26,6 @@ const getSpecialtyById = async (req, res) => {
         }
         res.status(200).json(specialty);
     } catch (err) {
-        console.error("Error retrieving specialty by Id:", err);
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
@@ -38,9 +36,8 @@ const createSpecialty = async (req, res) => {
     try {
         const newSpecialty = new Specialty(req.body);
         const saveSpecialty = await newSpecialty.save();
-        res.status(201).json(saveSpecialty);
+        res.status(201).json({ message:"Specialty created successfuly" , Specialty: saveSpecialty});
     } catch (err) {
-        console.error("Error creating specialty:", err);
         res.status(500).json({ message: "Error creating specialty", error: err.message });
     }
 };
@@ -60,12 +57,11 @@ const updateSpecialty = async (req, res) => {
     const response = await Specialty.replaceOne({ _id: specialtyId }, updatedSpecialty);
 
     if (response.modifiedCount > 0) {
-      res.status(204).send(); // Success with no content
+      res.status(200).json({ message: "Specialty updated successfully", specialty: updatedSpecialty });
     } else {
       res.status(404).json({ message: "Specialty not found or no changes made." });
     }
   } catch (error) {
-    console.error("Error updating specialty:", error);
     res.status(500).json({ message: "An error occurred while updating the specialty." });
   }
 };
@@ -84,7 +80,6 @@ const deleteSpecialty = async (req, res) => {
         }
         res.status(200).json({ message: "Specialty deleted" });
     } catch (err) {
-        console.error("Error deleting specialty:", err);
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
