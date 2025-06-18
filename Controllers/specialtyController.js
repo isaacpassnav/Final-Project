@@ -38,9 +38,8 @@ const createSpecialty = async (req, res) => {
     try {
         const newSpecialty = new Specialty(req.body);
         const saveSpecialty = await newSpecialty.save();
-        res.status(201).json(saveSpecialty);
+        res.status(201).json({ message:"Specialty created successfuly" , Specialty: saveSpecialty});
     } catch (err) {
-        console.error("Error creating specialty:", err);
         res.status(500).json({ message: "Error creating specialty", error: err.message });
     }
 };
@@ -60,7 +59,7 @@ const updateSpecialty = async (req, res) => {
     const response = await Specialty.replaceOne({ _id: specialtyId }, updatedSpecialty);
 
     if (response.modifiedCount > 0) {
-      res.status(204).send(); // Success with no content
+      res.status(200).json({ message: "Specialty updated successfully", specialty: updatedSpecialty });
     } else {
       res.status(404).json({ message: "Specialty not found or no changes made." });
     }

@@ -31,15 +31,20 @@ const getHospitalById = async (req, res) => {
 };
 
 const createHospital = async (req, res) => {
-  //#swagger.tags = ['Hospitals']
+    //#swagger.tags = ['Hospitals']
   //#swagger.summary = 'Create Hospital'
-    try {
-        const newHospital = new Hospital(req.body);
-        const saved = await newHospital.save();
-        res.status(201).json(saved);
-    } catch (err) {
-        res.status(500).json({ message: "Error creating hospital", error: err.message });
+  try {
+    const exists = await Hospital.findOne({ name: req.body.name, address: req.body.address });
+    if (exists) {
+      return res.status(409).json({ message: "Hospital with same name already exists" });
     }
+
+    const newHospital = new Hospital(req.body);
+    const saved = await newHospital.save();
+    res.status(201).json({ message: "Hospital created successfully", Hospital: saved });
+  } catch (err) {
+    res.status(500).json({ message: "Error creating hospital", error: err.message });
+  }
 };
 
 const updateHospital = async (req, res) => {
@@ -47,6 +52,11 @@ const updateHospital = async (req, res) => {
   //#swagger.summary = 'Update Hospital by ID'
 
   try {
+    const exists = await Hospital.findOne({ name: req.body.name, address: req.body.address });
+    if (exists) {
+      return res.status(409).json({ message: "Hospital with same name already exists" });
+    }
+
     const hospitalId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
 
     const updatedHospital = {
@@ -60,7 +70,7 @@ const updateHospital = async (req, res) => {
     const response = await Hospital.replaceOne({ _id: hospitalId }, updatedHospital);
 
     if (response.modifiedCount > 0) {
-      res.status(200).json(updatedHospital); // Return the updated hospital data
+      res.status(200).json({message: "Hospital Updated succesfully" , hospitalUpdated: updatedHospital});
     } else {
       res.status(404).json({ error: "Hospital not found or no changes made." });
     }

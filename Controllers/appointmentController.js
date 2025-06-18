@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 const Appointment = require("../models/Appointment");
+const Patient = require("../models/Users");
+const Doctor = require("../models/Doctor");
+const Hospital = require("../models/Hostipals");
+
 
 const getAllAppointments = async (req, res) => {
   //#swagger.tags = ['Appointments']
@@ -42,9 +46,8 @@ const createAppointment = async (req, res) => {
     try {
         const newAppointment = new Appointment(req.body);
         const saved = await newAppointment.save();
-        res.status(201).json(saved);
+        res.status(201).json({ message: "New Appointment created successfully", appointmentID: saved._id });
     } catch (err) {
-        console.error("Error saving new Appointment", err);
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
@@ -55,20 +58,41 @@ const updateAppointment = async (req, res) => {
 
   try {
     const appointmentId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
+    const { patient, doctor, hospital, date, reason, status } = req.body;
+
+    // Verificar que los IDs existan en sus colecciones
+    const [foundPatient, foundDoctor, foundHospital] = await Promise.all([
+      Patient.findById(patient),
+      Doctor.findById(doctor),
+      Hospital.findById(hospital)
+    ]);
+
+    if (!foundPatient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+    if (!foundDoctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+    if (!foundHospital) {
+      return res.status(404).json({ message: "Hospital not found" });
+    }
 
     const updatedAppointment = {
-      patient: req.body.patient,
-      doctor: req.body.doctor,
-      hospital: req.body.hospital,
-      date: req.body.date,
-      reason: req.body.reason,
-      status: req.body.status
+      patient,
+      doctor,
+      hospital,
+      date,
+      reason,
+      status
     };
 
     const response = await Appointment.replaceOne({ _id: appointmentId }, updatedAppointment);
 
     if (response.modifiedCount > 0) {
-      res.status(204).send(); // Success with no content
+      res.status(200).json({
+        message: "Appointment updated successfully",
+        appointment: updatedAppointment
+      });
     } else {
       res.status(404).json({ message: "Appointment not found or no changes made." });
     }

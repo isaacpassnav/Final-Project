@@ -10,7 +10,7 @@ const doctorRules = {
   hospital: "required|string",
 };
 
-validateDoctor = (req, res, next) => {
+const validateDoctor = async (req, res, next) => {
   const validation = new Validator(req.body, doctorRules);
 
   if (validation.fails()) {
@@ -19,7 +19,6 @@ validateDoctor = (req, res, next) => {
       errors: validation.errors.all(),
     });
   }
-
   next();
 };
 

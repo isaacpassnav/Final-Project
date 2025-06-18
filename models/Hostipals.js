@@ -4,6 +4,7 @@ const hospitalSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Hospital name is required"],
+    unique: true,
     trim: true,
     minlength: [5, "Hospital name must be at least 5 characters long"],
     maxlength: [100, "Hospital name can't be longer than 100 characters"],
@@ -16,7 +17,7 @@ const hospitalSchema = new mongoose.Schema({
     maxlength: [200, "Hospital address can't be longer than 200 characters"],
   },
   phone: {
-    type: Number,
+    type: String,
     required: [true, "Phone number is required"],
     trim: true,
     match: [/^\+?[0-9\s\-]{7,20}$/, "Invalid phone number format"]
@@ -27,8 +28,9 @@ const hospitalSchema = new mongoose.Schema({
     match: [/^https?:\/\/.+/, "Invalid website URL"]
   },
   capacity: {
-    type: Number,
-    min: [0, "Capacity must be at least 0"]
+    type: String,
+    required: [true, "Capacity is required"],
+    minlength: [1, "Capacity must be at least 1 character long"],
   }
 }, { timestamps: true });
 

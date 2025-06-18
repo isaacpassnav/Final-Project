@@ -46,15 +46,14 @@ const getDoctorsBySpecialty = async (req, res) => {
     }
 };
 const createDoctor = async (req, res) => {
-          //#swagger.tags = ['Doctors']
-  //#swagger.summary = 'Create Doctor'
+    //#swagger.tags = ['Doctors']
+    //#swagger.summary = 'Create Doctor'
     try {
         const newDoctor = new Doctor(req.body);
         const saveDoctor = await newDoctor.save();
-        res.status(201).json(saveDoctor);
+        res.status(201).json({ message: "New doctor created successfuly", doctorID: saveDoctor._id });
     } catch (err) {
-        console.error("Error saving new doctor", err);
-        res.status(500).json({ message: "Error saving new doctor", error: err.message });
+        res.status(500).json({ message: "Error creating new doctor", error: err.message });
     };
 }
 
@@ -79,7 +78,7 @@ const updateDoctor = async (req, res) => {
     const response = await Doctor.replaceOne({ _id: doctorId }, updatedDoctor);
 
     if (response.modifiedCount > 0) {
-      res.status(204).send(); // Success with no content
+      res.status(200).json({ message: "Doctor updated successfully", doctor: updatedDoctor });
     } else {
       res.status(404).json({ error: "Doctor not found or no changes made." });
     }
