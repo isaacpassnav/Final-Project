@@ -9,6 +9,12 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+transporter.verify().then(() => {
+  console.log("Ready to send emails");
+}).catch(err => {
+  console.error("Mailtrap verification failed:", err);
+});
+
 const sendAppointmentEmail = async (to, subject, text) => {
   const mailOptions = {
     from: '"Hospital Admin" <admin@hospital.com>',

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Appointment = require("../models/Appointment");
-const nodemailer = require('nodemailer');
+const sendAppointmentEmail = require("../utils/email");
 
 const getAllAppointments = async (req, res) => {
   //#swagger.tags = ['Appointments']
@@ -42,48 +42,31 @@ const getAppointmentById = async (req, res) => {
 const createAppointment = async (req, res) => {
   //#swagger.tags = ['Appointments']
   //#swagger.summary = 'Create an Appointment'
+
   try {
     const newAppointment = new Appointment(req.body);
     const saved = await newAppointment.save();
 
-    // Setup Nodemailer transporter with Mailtrap
-    const transporter = nodemailer.createTransport({
-      host: process.env.MAILTRAP_HOST,
-      port: process.env.MAILTRAP_PORT,
-      auth: {
-        user: process.env.MAILTRAP_USER,
-        pass: process.env.MAILTRAP_PASS,
-      },
-    });
-
-    // Destructure necessary data from request for the email
     const { email, date, reason } = req.body;
 
     if (email) {
-      const mailOptions = {
-        from: '"Hospital App" <no-reply@hospital.com>',
-        to: email,
-        subject: 'Appointment Confirmation',
-        text: `Your appointment is confirmed for ${date}. Reason: ${reason}`,
-        html: `<p>Your appointment is <strong>confirmed</strong> for <strong>${date}</strong>.</p>
-               <p><strong>Reason:</strong> ${reason}</p>`,
-      };
+      const subject = "Appointment Confirmation";
+      const text = `Your appointment is confirmed for ${date}. Reason: ${reason}`;
+      const html = `<p>Your appointment is <strong>confirmed</strong> for <strong>${date}</strong>.</p>
+                    <p><strong>Reason:</strong> ${reason}</p>`;
 
-      // Send the confirmation email
-      await transporter.sendMail(mailOptions);
+      await sendAppointmentEmail(email, subject, text, html);
     }
-
     res.status(201).json({
-      message: 'Appointment created successfully and confirmation email sent.',
+      message: "Appointment created successfully and confirmation email sent.",
       appointment: saved,
     });
 
   } catch (err) {
-    console.error("Error saving new Appointment", err);
+    console.error("❌ Error saving appointment:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
 
 const updateAppointment = async (req, res) => {
   //#swagger.tags = ['Appointments']
