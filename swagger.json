@@ -51,42 +51,101 @@
               "type": "object",
               "properties": {
                 "firstName": {
-                  "example": "any"
+                  "example": "Daniel"
                 },
                 "lastName": {
-                  "example": "any"
+                  "example": "Smith"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "doctorDanielSmith@hospital.com"
                 },
+                "phone": {
+                  "example": "+1234567890"
+                },  
                 "gender": {
-                  "example": "any"
+                  "enum": ["male", "female", "other"],
+                  "example": "male"
                 },
                 "specialty": {
-                  "example": "any"
+                  "example": "685097f8c9963779c87036bf"
                 },
                 "hospital": {
-                  "example": "any"
+                  "example": "68509868c9963779c87036c1"
                 }
               }
             }
           }
         ],
-        "responses": {
+         "responses": {
           "201": {
-            "description": "Created"
+            "description": "New doctor created successfuly",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "New doctor created successfuly"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Bad Request"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized: Please log in with GitHub.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "🚫 Unauthorized: Please log in with GitHub."
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict: Duplicate fields found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Duplicate fields found"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Data Validation Failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Data Validation Failed"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error creating new doctor | Server error while checking duplicates",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Internal server error during authentication"
+                }
+              }
+            }
           }
         }
       }
@@ -141,33 +200,34 @@
               "type": "object",
               "properties": {
                 "firstName": {
-                  "example": "any"
+                  "example": "Daniel"
                 },
                 "lastName": {
-                  "example": "any"
+                  "example": "Smith"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "doctorDanielSmith@hospital.com"
                 },
                 "phone": {
-                  "example": "any"
+                  "example": "+1234567890"
                 },
                 "gender": {
-                  "example": "any"
+                  "enum": ["male", "female", "other"],
+                  "example": "male"
                 },
                 "specialty": {
-                  "example": "any"
+                  "example": "685097f8c9963779c87036bf"
                 },
                 "hospital": {
-                  "example": "any"
+                  "example": "68509868c9963779c87036c1"
                 }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "Doctor updated successfully"
           },
           "401": {
             "description": "Unauthorized"
@@ -176,7 +236,10 @@
             "description": "Forbidden"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Doctor not found or no changes made."
+          },
+          "422": {
+            "description": "Data Validation Failed"
           },
           "500": {
             "description": "Internal Server Error"
@@ -277,10 +340,10 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "example": "Neurology"
                 },
                 "description": {
-                  "example": "any"
+                  "example": "Specializes in the diagnosis, treatment, and study of disorders affecting the nervous system"
                 }
               }
             }
@@ -288,13 +351,16 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Specialty created successfuly"
           },
           "400": {
             "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Data Validation Failed"
           },
           "403": {
             "description": "Forbidden"
@@ -355,18 +421,18 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "example": "Neurology"
                 },
                 "description": {
-                  "example": "any"
+                  "example": "Specializes in the diagnosis, treatment, and study of disorders affecting the nervous system and brain"
                 }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "Specialty updated successfully"
           },
           "401": {
             "description": "Unauthorized"
@@ -375,7 +441,10 @@
             "description": "Forbidden"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Specialty not found or no changes made."
+          },
+          "422": {
+            "description": "Data Validation Failed"
           },
           "500": {
             "description": "Internal Server Error"
@@ -448,13 +517,19 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "example": "General Seattle Hospital"
                 },
                 "address": {
-                  "example": "any"
+                  "example": "134 Main St, Springfield, USA"
                 },
                 "phone": {
-                  "example": "any"
+                  "example": "+1234567890"
+                },
+                "website": {
+                  "example": "https://saintluke.org"
+                },
+                "capacity": {
+                  "example": "40"
                 }
               }
             }
@@ -462,7 +537,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Hospital created succesfully"
           },
           "400": {
             "description": "Bad Request"
@@ -472,6 +547,12 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "409": {
+            "description": "Hospital with same name already exists"
+          },
+          "422": {
+            "description": "Data Validation Failed"
           },
           "500": {
             "description": "Internal Server Error"
@@ -529,27 +610,27 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "example": "General Seattle Hospital"
                 },
                 "address": {
-                  "example": "any"
+                  "example": "134 Main St, Springfield, USA"
                 },
                 "phone": {
-                  "example": "any"
+                  "example": "+1234567890"
                 },
                 "website": {
-                  "example": "any"
+                  "example": "https://saintluke.org"
                 },
                 "capacity": {
-                  "example": "any"
+                  "example": "400"
                 }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "Hospital Updated succesfully"
           },
           "401": {
             "description": "Unauthorized"
@@ -558,8 +639,11 @@
             "description": "Forbidden"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Hospital not found or no changes made."
           },
+          "422": {
+            "description": "Data Validation Failed"
+          }, 
           "500": {
             "description": "Internal Server Error"
           }
@@ -616,17 +700,17 @@
               "type": "object",
               "properties": {
                 "fullName": {
-                  "example": "any"
+                  "example": "Andrea Ramos"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "andrearamos@admin.com"
                 },
                 "password": {
                   "type":"string",
-                  "example": "any"
+                  "example": "strongpassword123"
                 },
                 "role": {
-                  "example": "any"
+                  "example": "admin"
                 }
               }
             }
@@ -634,7 +718,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "User registered/created successfully"
           },
           "400": {
             "description": "Bad Request"
@@ -646,7 +730,7 @@
             "description": "Forbidden"
           },
           "409": {
-            "description": "Conflict"
+            "description": "Email already exists"
           },
           "500": {
             "description": "Internal Server Error"
@@ -656,20 +740,89 @@
     },
     "/users/login": {
       "post": {
-        "description": "",
+        "summary": "Login with GitHub OAuth",
+        "description": "Authenticates the user using GitHub OAuth and returns user information if successful.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Authentication successful",
+                  "user": "Andrea Ramos"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed. User not logged in.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Authentication failed. User not logged in."
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Login data validation failed.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Login data validation failed"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error during authentication",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Internal server error during authentication",
+                  "error": "Internal server error"
+                }
+              }
+            }
           }
         }
       }
     },
     "/users/logout": {
       "post": {
-        "description": "",
+        "summary": "Logout authenticated user",
+        "description": "Destroys the user session and logs them out.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Logout successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Logout successful",
+                  "user": "Andrea Ramos"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Logout failed, user still authenticated",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Logout failed, user still authenticated"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error during logout",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Failed to log out the user | Failed to destroy the session"
+                }
+              }
+            }
           }
         }
       }
@@ -740,31 +893,26 @@
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
+                "fullName": {
+                  "example": "Daniel Mhulestein"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "danielM@patient.com"
                 },
-                "phone": {
-                  "example": "any"
-                },
-                "gender": {
-                  "example": "any"
+                "password": {
+                  "type":"string",
+                  "example": "strongpassword123"
                 },
                 "role": {
-                  "example": "any"
+                  "example": "patient"
                 }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "User updated successfully"
           },
           "401": {
             "description": "Unauthorized"
@@ -773,10 +921,13 @@
             "description": "Forbidden"
           },
           "404": {
-            "description": "Not Found"
+            "description": "User not found or no changes made."
+          },
+          "422": {
+            "description": "Data Validation Failed"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Update failed, system error"
           }
         }
       },
@@ -846,19 +997,19 @@
               "type": "object",
               "properties": {
                 "patient": {
-                  "example": "any"
+                  "example": "6091f2f4c65bc0205299bfed"
                 },
                 "doctor": {
-                  "example": "any"
+                  "example": "6851f2f4c65bc9505299bfed"
                 },
                 "hospital": {
-                  "example": "any"
+                  "example": "6851g7g4c65bc0205299bfed"
                 },
                 "date": {
-                  "example": "any"
+                  "example": "2023-10-01T10:00:00Z"
                 },
                 "reason": {
-                  "example": "any"
+                  "example": "Headache"
                 }
               }
             }
@@ -866,7 +1017,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "New Appointment created successfully"
           },
           "400": {
             "description": "Bad Request"
@@ -876,6 +1027,9 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "422": {
+            "description": "Data Validation Failed"
           },
           "500": {
             "description": "Internal Server Error"
@@ -933,30 +1087,30 @@
               "type": "object",
               "properties": {
                 "patient": {
-                  "example": "any"
+                  "example": "iub5t874ghb38iye823g5"
                 },
                 "doctor": {
-                  "example": "any"
+                  "example": "ub4r8p73g48r73gbrpi32y"
                 },
                 "hospital": {
-                  "example": "any"
+                  "example": "hb849u3r8fhewifb3847rbf"
                 },
                 "date": {
-                  "example": "any"
+                  "example": "2023-10-01"
                 },
                 "reason": {
-                  "example": "any"
+                  "example": "Muscular pain"
                 },
                 "status": {
-                  "example": "any"
+                  "example": "[pending, confirmed, cancelled]"
                 }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "Appointment updated successfully"
           },
           "401": {
             "description": "Unauthorized"
@@ -965,7 +1119,10 @@
             "description": "Forbidden"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Appointment not found or no changes made."
+          },
+          "422": {
+            "description": "Data Validation Failed"
           },
           "500": {
             "description": "Internal Server Error"

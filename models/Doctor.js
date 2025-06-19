@@ -26,7 +26,8 @@ const doctorSchema = new mongoose.Schema({
   phone: {
     type: Number,
     trim: true,
-    match: [/^\+?[0-9]{7,15}$/, "Please provide a valid phone number"]
+    match: [/^\+?[0-9]{7,15}$/, "Please provide a valid phone number"],
+    min: [1000000000, "Phone number must be at least 10 digits long"],
   },
   gender: {
     type: String,
