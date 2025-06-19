@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
 const Appointment = require("../models/Appointment");
+const sendAppointmentEmail = require("../utils/email");
+
 const Patient = require("../models/Users");
 const Doctor = require("../models/Doctor");
 const Hospital = require("../models/Hostipals");
 
+// c0b8c9d3e0f9e9c6104cfb09974e91d4598c1830
 
 const getAllAppointments = async (req, res) => {
   //#swagger.tags = ['Appointments']
@@ -38,16 +41,37 @@ const getAppointmentById = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message, error: err });
     }
 };
+
+// new create appointment set up with email
 const createAppointment = async (req, res) => {
   //#swagger.tags = ['Appointments']
   //#swagger.summary = 'Create an Appointment'
-    try {
-        const newAppointment = new Appointment(req.body);
-        const saved = await newAppointment.save();
-        res.status(201).json({ message: "New Appointment created successfully", appointmentID: saved._id });
-    } catch (err) {
-        res.status(500).json({ message: "Server error", error: err.message });
+
+  try {
+    const newAppointment = new Appointment(req.body);
+    const saved = await newAppointment.save();
+
+    const { email, date, reason } = req.body;
+
+    if (email) {
+      const subject = "Appointment Confirmation";
+      const text = `Your appointment is confirmed for ${date}. Reason: ${reason}`;
+      const html = `<p>Your appointment is <strong>confirmed</strong> for <strong>${date}</strong>.</p>
+                    <p><strong>Reason:</strong> ${reason}</p>`;
+
+      // Enviamos el correo (recuerda que sendAppointmentEmail debe aceptar 4 parámetros)
+      await sendAppointmentEmail(email, subject, text, html);
     }
+
+    res.status(201).json({
+      message: "Appointment created successfully and confirmation email sent.",
+      appointment: saved,
+    });
+
+  } catch (err) {
+    console.error("❌ Error creating appointment:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
 };
 const updateAppointment = async (req, res) => {
   //#swagger.tags = ['Appointments']
