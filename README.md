@@ -27,15 +27,18 @@ RESTful API for managing hospital appointment scheduling. Includes GitHub OAuth 
 
 ---
 
-## 🌐 Deployed Link
+## 🌐 Deployed Link with GitHub OAuth
 
 🔗 [Live API – Login Endpoint](https://final-project-zx8v.onrender.com/auth/login)
+
+All endpoints can be tested after logging in with your GitHub account.  
+⚠️ To access admin-restricted endpoints, update the middleware to include your GitHub username as an authorized admin.
 
 ---
 
 ## 📄 Swagger Documentation
 
-Access and test all endpoints via Swagger:  
+Access and test via Swagger(only for reques GET ):  
 🔗 [Swagger UI](https://final-project-zx8v.onrender.com/api-docs)
 
 ---
